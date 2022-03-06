@@ -12,12 +12,16 @@ import {
   ProgressView
 } from "@react-native-community/progress-view";
 
+import WeeklyLimitScreen from '../screens/WeeklyLimitScreen';
+import DebitCardScreenNavigator from '../navigation/DebitCardScreenNavigator';
 import { Navigator } from '@react-navigation/native';
 import { globalStyles } from '../styles/global'
 
 const DebitCardScreen = ({navigation}) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [isLimitEnabled, setIsLimitEnabled] = useState(false);
+  function toggleSwitch(type) {
+      setIsLimitEnabled(previousState => !previousState);
+  }
 
   return (
     <View style={globalStyles.container}>
@@ -106,6 +110,8 @@ const DebitCardScreen = ({navigation}) => {
                   <View style={styles.listItemTitlesView}>
                     <TouchableOpacity style={styles.listItemTitlesView}
                       onPress={()=> {
+                        if(isLimitEnabled && item.type == 'weeklylimit')
+                          navigation.navigate("WeeklyLimitScreen")
                       }
                     }>
                       <Text style={styles.listItemTitle}>
@@ -116,13 +122,17 @@ const DebitCardScreen = ({navigation}) => {
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  {item.showToggle ? (
+                  {item.type == "weeklylimit" ? (
                     <Switch
                       style={styles.listItemSwitch}
                       trackColor={{ false: "#EEEEEE", true: "#01D167" }}
                       thumbColor={'white'}
-                      onValueChange={toggleSwitch}
-                      value={isEnabled}
+                      onValueChange={
+                        toggleSwitch
+                      }
+                      value={
+                        isLimitEnabled
+                      }
                     />
                   ) : null }
                 </View>}

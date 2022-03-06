@@ -9,10 +9,10 @@ import {
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeScreen from '../screens/HomeScreen';
-import DebitCardScreen from '../screens/DebitCardScreen';
 import PaymentsScreen from '../screens/PaymentsScreen';
 import CreditScreen from '../screens/CreditScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import DebitCardScreenNavigator from '../navigation/DebitCardScreenNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +33,7 @@ const Tabs = () => {
           </View>
         ),
       }}/>
-      <Tab.Screen name="Debit Card" component={DebitCardScreen} options={{
+      <Tab.Screen name="Debit Card" component={DebitCardScreenNavigator} options={{
         tabBarIcon: ({focused}) => (
           <View>
             <Image
