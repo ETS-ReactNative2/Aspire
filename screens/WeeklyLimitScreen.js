@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   Text,
   View,
@@ -12,74 +12,88 @@ import {
 
 import { globalStyles } from '../styles/global'
 
-const WeeklyLimitScreen = ({navigation}) => {
-  return (
-    <View style={globalStyles.container}>
-        <TouchableOpacity onPress={()=>{
-          navigation.goBack()
-        }}>
+class WeeklyLimitScreen extends Component {
 
-             <Image style={styles.backImage}
-             source={require('../assets/icons/ic_back.png')}>
-             </Image>
-        </TouchableOpacity>
-        <Text style={styles.header}>
-            Spending limit
-        </Text>
-        <Image
-          style={globalStyles.logo}
-          source={require('../assets/icons/ic_logo.png')}
-        />
+  constructor() {
+    super();
+    this.state = {
+      amount: "5,000",
+    }
+    this.refreshAmount= this.refreshAmount.bind(this);
+}
+    refreshAmount(value) {
+        this.setState({ amount: value })
+    }
 
-        <View style={styles.featuresView}>
+    render() {
+      return (
+        <View style={globalStyles.container}>
+            <TouchableOpacity onPress={()=>{
+              this.props.navigation.goBack()
+            }}>
 
-          <View style={styles.descriptionView}>
-              <Image style={styles.decriptionImage}
-              source={require('../assets/icons/ic_analyser.png')}>
-              </Image>
-              <Text style={styles.descriptionText}>Set a weekly debit card spending limit</Text>
-          </View>
+                 <Image style={styles.backImage}
+                 source={require('../assets/icons/ic_back.png')}>
+                 </Image>
+            </TouchableOpacity>
+            <Text style={styles.header}>
+                Spending limit
+            </Text>
+            <Image
+              style={globalStyles.logo}
+              source={require('../assets/icons/ic_logo.png')}
+            />
 
-          <View style={styles.currentLimitView}>
-            <View style={styles.currencyView}>
-              <Text style={styles.currencyText}> S$ </Text>
+            <View style={styles.featuresView}>
+
+              <View style={styles.descriptionView}>
+                  <Image style={styles.decriptionImage}
+                  source={require('../assets/icons/ic_analyser.png')}>
+                  </Image>
+                  <Text style={styles.descriptionText}>Set a weekly debit card spending limit</Text>
+              </View>
+
+              <View style={styles.currentLimitView}>
+                <View style={styles.currencyView}>
+                  <Text style={styles.currencyText}> S$ </Text>
+                </View>
+                <Text style={styles.limitText}> {this.state.amount} </Text>
+              </View>
+
+              <Text style={styles.noteText}>
+                Here weekly means the last 7 days - not the calendar week
+              </Text>
+
+              <View style={styles.optionsView}>
+
+                <TouchableOpacity style={styles.optionButton}
+                onPress={() => this.refreshAmount('5,000')}
+                >
+                  <Text style={styles.buttonText}>S$ 5,000</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.optionButton}
+                onPress={() => this.refreshAmount('10,000')}
+                >
+                  <Text style={styles.buttonText}>S$ 10,000</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.optionButton}
+                  onPress={() => this.refreshAmount('20,000')}
+                >
+                  <Text style={styles.buttonText}>S$ 20,000</Text>
+                </TouchableOpacity>
+              </View>
+
+              <View style={styles.footerView}>
+                <TouchableOpacity style={styles.footerButton}
+                  onPress={this.onPress}
+                >
+                  <Text style={styles.footerButtonText}>Save</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <Text style={styles.limitText}> 5,000 </Text>
-          </View>
-
-          <Text style={styles.noteText}>
-            Here weekly means the last 7 days - not the calendar week
-          </Text>
-
-          <View style={styles.optionsView}>
-
-            <TouchableOpacity style={styles.optionButton}
-            // onPress={this.onPress}
-            >
-              <Text style={styles.buttonText}>S$ 5,000</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton}
-            // onPress={this.onPress}
-            >
-              <Text style={styles.buttonText}>S$ 10,000</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton}
-              onPress={this.onPress}
-            >
-              <Text style={styles.buttonText}>S$ 20,000</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.footerView}>
-            <TouchableOpacity style={styles.footerButton}
-              onPress={this.onPress}
-            >
-              <Text style={styles.footerButtonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-    </View>
-  )
+      )
+    }
 }
 
 export default WeeklyLimitScreen;
