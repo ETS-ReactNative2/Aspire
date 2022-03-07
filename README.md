@@ -2,7 +2,11 @@
 
 A mobile application built using React Native, Redux
 
-![screenshots of example app](/screenshots/ios/SS_1.png) ![screenshots of example app](/screenshots/ios/SS_2.png)
+![screenshots of app](/screenshots/ios/SS_1.png)
+
+![screenshots of app](/screenshots/ios/SS_2.png)
+
+![video of app](/videos/demo_video_ios.gif)
 
 ## Features
 
@@ -39,5 +43,20 @@ npm install
 ```
 npx react-native start
 ```
+
+### 3. Run your app
+
+#### iOS
+
+```
+npx react-native run-ios
+```
+
+#### Android
+
+```
+npx react-native run-android
+```
+
 
 Follow the instructions from the terminal to preview the app on your phone or using an emulator.
