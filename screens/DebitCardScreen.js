@@ -17,10 +17,16 @@ import DebitCardScreenNavigator from '../navigation/DebitCardScreenNavigator';
 import { Navigator } from '@react-navigation/native';
 import { globalStyles } from '../styles/global'
 
+import { useSelector, useDispatch } from 'react-redux';
+import { setCardWeeklyLimitEnabled } from '../redux/actions';
+
 const DebitCardScreen = ({navigation}) => {
-  const [isLimitEnabled, setIsLimitEnabled] = useState(false);
-  function toggleSwitch(type) {
-      setIsLimitEnabled(previousState => !previousState);
+  const { limit, weeklyLimitEnabled } = useSelector(state => state.cardReducer);
+  const dispatch = useDispatch();
+
+  function toggleSwitch() {
+    console.log("switch" + !weeklyLimitEnabled);
+      dispatch.setCardWeeklyLimitEnabled(!weeklyLimitEnabled);
   }
 
   return (
@@ -52,7 +58,7 @@ const DebitCardScreen = ({navigation}) => {
                   $345
                 </Text>
                 <Text style={styles.spendingLimitTotalText}>
-                   | $5,000
+                   | {limit}
                 </Text>
               </View>
               <ProgressView style={styles.spendingProgressView}
@@ -74,7 +80,7 @@ const DebitCardScreen = ({navigation}) => {
                 {
                   type: 'weeklylimit',
                   title: 'Weekly spending limit',
-                  subtitle: 'Your weekly spending limit is S$ 5,000',
+                  subtitle: 'Your weekly spending limit is S$ ' + limit,
                   icon: require('../assets/icons/ic_weekly-limit.png'),
                   showToggle: 1,
                 },
@@ -108,9 +114,9 @@ const DebitCardScreen = ({navigation}) => {
                   >
                   </Image>
                   <View style={styles.listItemTitlesView}>
-                    <TouchableOpacity style={styles.listItemTitlesView}
+                    <TouchableOpacity
                       onPress={()=> {
-                        if(isLimitEnabled && item.type == 'weeklylimit')
+                        if(weeklyLimitEnabled && item.type == 'weeklylimit')
                           navigation.navigate("WeeklyLimitScreen")
                       }
                     }>
@@ -128,10 +134,10 @@ const DebitCardScreen = ({navigation}) => {
                       trackColor={{ false: "#EEEEEE", true: "#01D167" }}
                       thumbColor={'white'}
                       onValueChange={
-                        toggleSwitch
+                        (value) => dispatch(setCardWeeklyLimitEnabled(value))
                       }
                       value={
-                        isLimitEnabled
+                        weeklyLimitEnabled
                       }
                     />
                   ) : null }
@@ -359,11 +365,11 @@ const styles = StyleSheet.create({
 
   listItemView: {
     flexDirection: 'row',
-    // padding: 10,
   },
 
   listItemTitlesView: {
     marginLeft: 10,
+    flex: 1,
   },
 
   listImage: {

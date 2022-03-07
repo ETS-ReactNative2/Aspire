@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -10,26 +10,24 @@ import {
   Button,
 } from 'react-native';
 
-import { globalStyles } from '../styles/global'
+import { globalStyles } from '../styles/global';
 
-class WeeklyLimitScreen extends Component {
+import { useSelector, useDispatch } from 'react-redux';
+import { setCardSpendingLimit } from '../redux/actions';
 
-  constructor() {
-    super();
-    this.state = {
-      amount: "5,000",
-    }
-    this.refreshAmount= this.refreshAmount.bind(this);
-}
-    refreshAmount(value) {
-        this.setState({ amount: value })
-    }
+const WeeklyLimitScreen = ({navigation}) => {
+  const { limit } = useSelector(state => state.cardReducer);
+  const dispatch = useDispatch();
 
-    render() {
-      return (
+  const [amount, setAmount] = useState(limit);
+  function updateAmount(value) {
+      setAmount(value);
+  }
+
+  return (
         <View style={globalStyles.container}>
             <TouchableOpacity onPress={()=>{
-              this.props.navigation.goBack()
+              navigation.goBack()
             }}>
 
                  <Image style={styles.backImage}
@@ -57,7 +55,7 @@ class WeeklyLimitScreen extends Component {
                 <View style={styles.currencyView}>
                   <Text style={styles.currencyText}> S$ </Text>
                 </View>
-                <Text style={styles.limitText}> {this.state.amount} </Text>
+                <Text style={styles.limitText}> { amount } </Text>
               </View>
 
               <Text style={styles.noteText}>
@@ -67,17 +65,17 @@ class WeeklyLimitScreen extends Component {
               <View style={styles.optionsView}>
 
                 <TouchableOpacity style={styles.optionButton}
-                onPress={() => this.refreshAmount('5,000')}
+                onPress={() => updateAmount('5,000')}
                 >
                   <Text style={styles.buttonText}>S$ 5,000</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.optionButton}
-                onPress={() => this.refreshAmount('10,000')}
+                onPress={() => updateAmount('10,000')}
                 >
                   <Text style={styles.buttonText}>S$ 10,000</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.optionButton}
-                  onPress={() => this.refreshAmount('20,000')}
+                  onPress={() => updateAmount('20,000')}
                 >
                   <Text style={styles.buttonText}>S$ 20,000</Text>
                 </TouchableOpacity>
@@ -85,7 +83,11 @@ class WeeklyLimitScreen extends Component {
 
               <View style={styles.footerView}>
                 <TouchableOpacity style={styles.footerButton}
-                  onPress={this.onPress}
+                  onPress={ () => {
+                    console.log("Save");
+                    dispatch(setCardSpendingLimit(amount));
+                  }
+                  }
                 >
                   <Text style={styles.footerButtonText}>Save</Text>
                 </TouchableOpacity>
@@ -93,7 +95,6 @@ class WeeklyLimitScreen extends Component {
             </View>
         </View>
       )
-    }
 }
 
 export default WeeklyLimitScreen;
