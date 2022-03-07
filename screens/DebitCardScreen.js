@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   View,
@@ -18,11 +18,15 @@ import { Navigator } from '@react-navigation/native';
 import { globalStyles } from '../styles/global'
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setCardWeeklyLimitEnabled } from '../redux/actions';
+import { setCardWeeklyLimitEnabled, getDebitCardFeatures } from '../redux/actions';
 
 const DebitCardScreen = ({navigation}) => {
-  const { limit, weeklyLimitEnabled } = useSelector(state => state.cardReducer);
+  const { limit, weeklyLimitEnabled, debitCardFeatures } = useSelector(state => state.cardReducer);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+          dispatch(getDebitCardFeatures());
+      }, []);
 
   function toggleSwitch() {
     console.log("switch" + !weeklyLimitEnabled);
@@ -69,48 +73,12 @@ const DebitCardScreen = ({navigation}) => {
           </View>
           <View style={styles.listView}>
             <FlatList
-              data={[
-                {
-                  type: 'topup',
-                  title: 'Top-up account',
-                  subtitle: 'Deposit money to your account to use with card',
-                  icon: require('../assets/icons/ic_top-up.png'),
-                  showToggle: 0,
-                },
-                {
-                  type: 'weeklylimit',
-                  title: 'Weekly spending limit',
-                  subtitle: 'Your weekly spending limit is S$ ' + limit,
-                  icon: require('../assets/icons/ic_weekly-limit.png'),
-                  showToggle: 1,
-                },
-                {
-                  type: 'freezecard',
-                  title: 'Freeze card',
-                  subtitle: 'Your debit card is currently active',
-                  icon: require('../assets/icons/ic_freeze-card.png'),
-                  showToggle: 1,
-                },
-                {
-                  type: 'getnewcard',
-                  title: 'Get a new card',
-                  subtitle: 'This deactivates your current debit card',
-                  icon: require('../assets/icons/ic_get-new-card.png'),
-                  showToggle: 0,
-                },
-                {
-                  type: 'deactivated',
-                  title: 'Deactivated cards',
-                  subtitle: 'Your previously deactivated cards',
-                  icon: require('../assets/icons/ic_deactivated-cards.png'),
-                  showToggle: 0,
-                },
-              ]}
+              data={debitCardFeatures}
               renderItem={({item}) =>
                 <View style={styles.listItemView}>
                   <Image
                     style={styles.listImage}
-                    source={item.icon}
+                    source={{uri:item.icon}}
                   >
                   </Image>
                   <View style={styles.listItemTitlesView}>
@@ -123,9 +91,16 @@ const DebitCardScreen = ({navigation}) => {
                       <Text style={styles.listItemTitle}>
                         {item.title}
                       </Text>
-                      <Text style={styles.listItemSubtitle}>
-                        {item.subtitle}
-                      </Text>
+                      { item.type == 'weeklylimit' ? (
+                        <Text style={styles.listItemSubtitle}>
+                          {item.subtitle + ' ' + limit}
+                        </Text>
+                      ) : (
+                        <Text style={styles.listItemSubtitle}>
+                          {item.subtitle}
+                        </Text>
+                      )
+                      }
                     </TouchableOpacity>
                   </View>
                   {item.type == "weeklylimit" ? (
