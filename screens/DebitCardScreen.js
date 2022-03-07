@@ -7,6 +7,7 @@ import {
   FlatList,
   Switch,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import {
   ProgressView
@@ -35,6 +36,8 @@ const DebitCardScreen = ({navigation}) => {
 
   return (
     <View style={globalStyles.container}>
+        <StatusBar
+        barStyle={'light-content'}/>
         <Text style={styles.header}>
             Debit Card
         </Text>

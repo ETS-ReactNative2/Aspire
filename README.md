@@ -6,7 +6,7 @@ A mobile application built using React Native, Redux
 
 ## Features
 
-- Tab Based aplication with 5 tabs
+- Tab Based application with 5 tabs
 - Debit card screen
 - Weekly limit update screen
 - Enable/Disable weekly limit
